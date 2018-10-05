@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Quick Stocks</string>
-    <string name="btnTest">Test</string>
+    <string name="btnLookup">Get Stock Information</string>
+    <string name="txtSymbol">Symbol: </string>
+    <string name="inpSymbolHint">ABCD</string>
+    <string name="txtOptions">Options: </string>
+
+    <string name="btnOptions">Display Options</string>
+    <string name="btnSelectAll">Check All</string>
+    <string name="btnClearAll">Clear All</string>
+
+    <string name="categoryQuote">Quote</string>
+
+    <string name="chkHigh">High</string>
+    <string name="chkLow">Low</string>
+    <string name="chkLatestPrice">Latest Price</string>
 </resources>

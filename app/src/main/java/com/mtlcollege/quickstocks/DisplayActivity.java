@@ -1,82 +1,91 @@
 package com.mtlcollege.quickstocks;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
-import com.mtlcollege.quickstocks.util.HTTPConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import com.mtlcollege.quickstocks.util.Keys;
 
 public class DisplayActivity extends AppCompatActivity {
+    TextView txtSymbol, txtCompanyName, txtTest;
 
-    private static final int CONNECTION_PERMISSION_REQUEST = 1;
-    TextView txtTest;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+        txtSymbol = findViewById(R.id.txtSymbol);
+        txtCompanyName = findViewById(R.id.txtCompanyName);
         txtTest = findViewById(R.id.txtTest);
+        Bundle extras = getIntent().getExtras();
 
-        if (ContextCompat.checkSelfPermission(DisplayActivity.this,
-                Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(DisplayActivity.this, Manifest.permission.INTERNET)) {
-                ActivityCompat.requestPermissions(DisplayActivity.this,
-                        new String[]{Manifest.permission.INTERNET}, CONNECTION_PERMISSION_REQUEST);
+        try {
+            Keys keys = new Keys();
+            sp = getSharedPreferences(keys.PREFS, Context.MODE_PRIVATE);
+            String symbol = "";
+            String companyName = "";
+            ArrayList<String> list = new ArrayList<>();
+
+            JSONObject jsonObject = new JSONObject(extras.getString("lookupResult"));
+            Iterator<String> jsonKeys = jsonObject.keys();
+
+            if(jsonKeys.hasNext()) {
+                String currentKey = jsonKeys.next();
+                switch(currentKey) {
+                    case("quote"):
+                        symbol = jsonObject.getJSONObject(currentKey).getString("symbol");
+                        companyName = jsonObject.getJSONObject(currentKey).getString("companyName");
+                        if (sp.getBoolean(keys.Q_HIGH, false) == true)
+                            list.add("High: " + jsonObject.getJSONObject(currentKey).get("high").toString());
+                        if (sp.getBoolean(keys.Q_LOW, false) == true)
+                            list.add("Low: " + jsonObject.getJSONObject(currentKey).get("low").toString());
+                        if (sp.getBoolean(keys.Q_LATEST_PRICE, false) == true)
+                            list.add("Latest Price: " + jsonObject.getJSONObject(currentKey).get("latestPrice").toString());
+                        break;
+                    case("chart"):
+                        //TODO: Chart
+                        break;
+                    case("news"):
+                        //TODO: News
+                        break;
+                }
+
             }
-            else {
-                ActivityCompat.requestPermissions(DisplayActivity.this,
-                        new String[]{Manifest.permission.INTERNET}, CONNECTION_PERMISSION_REQUEST);
+
+            /*JSONArray jsonArray = jsonObject.getJSONArray("quote"); //"chart", "news", and "quote" are the three arrays
+            for (int i = 0; i < jsonArray.length(); i++) {
+                if(sp.contains(keys.LOW))
+                    list.add(jsonArray.getJSONObject(i).get("low").toString());
+                if(sp.contains(keys.HIGH))
+                    list.add(jsonArray.getJSONObject(i).get("low").toString());
+                if(sp.contains(keys.LATEST_PRICE))
+                    list.add(jsonArray.getJSONObject(i).get("latestPrice").toString());
+
+            }*/
+
+            txtSymbol.setText(symbol);
+            txtCompanyName.setText(companyName);
+            if(!list.isEmpty()) {
+                for(String item : list)
+                    txtTest.append(item + "\n");
             }
+            else
+                txtTest.setText("No options selected!");
         }
-        else {
-            String url = "https://api.iextrading.com/1.0/stock/MCD/batch?types=quote,news,chart&range=1m&last=1";
-            HTTPConnection connectionRequest = new HTTPConnection();
-
-            try {
-                String result = connectionRequest.execute(url).get();
-                if(result.startsWith("$RESPONSE_ERROR$")) {
-                    String[] splitString = result.split("#");
-                    String responseCode = splitString[1];
-                    txtTest.setText("There was a problem contacting the remote server. Response code: " + responseCode);
-                    return;
-                }
-                if(result.startsWith("$JAVA_ERROR$")) {
-                    txtTest.setText("The app encountered a problem connecting to the remote server. Please check the logs for more information.");
-                    return;
-                }
-
-                //TODO: Handler for an unknown symbol (result will be "Unknown Symbol")
-
-                //Print all the values for JSON object "high" for the last month of trading for stock MCD (McDonald's)
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    JSONArray jsonArray = jsonObject.getJSONArray("chart"); //"news" and "quote" are the other two arrays
-                    ArrayList<String> list = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        list.add(jsonArray.getJSONObject(i).get("high").toString());
-                    }
-                    txtTest.setText(list.toString());
-                }
-                catch (JSONException ex) {
-                    Log.w(String.valueOf(DisplayActivity.class), "onCreate: ", ex);
-                    txtTest.setText("JSONException: " + ex.getMessage());
-                }
-            }
-            catch(Exception ex) {
-                Log.w(String.valueOf(DisplayActivity.class), "onCreate: ", ex);
-                txtTest.setText("Exception: " + ex.getMessage());
-            }
+        catch (JSONException ex) {
+            Log.w(String.valueOf(DisplayActivity.class), "onCreate: ", ex);
+            txtTest.setText("JSONException: " + ex.getMessage());
         }
     }
 }

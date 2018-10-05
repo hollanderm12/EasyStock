@@ -3,11 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".DisplayActivity">
 
     <TextView
-        android:id="@+id/txtTest"
-        android:layout_width="0dp"
+        android:id="@+id/txtSymbol"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:textSize="24sp"
+        tools:text="SYMBOL" />
+
+    <TextView
+        android:id="@+id/txtCompanyName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="COMPANY NAME" />
+
+    <TextView
+        android:id="@+id/txtTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        tools:text="RESULTS" />
+
 </LinearLayout>

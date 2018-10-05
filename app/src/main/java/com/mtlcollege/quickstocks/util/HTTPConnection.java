@@ -10,9 +10,9 @@ import java.net.URL;
 
 public class HTTPConnection extends AsyncTask<String, Void, String> {
 
-    public static final String REQUEST_METHOD = "GET";
-    public static final int READ_TIMEOUT = 15000;
-    public static final int CONNECTION_TIMEOUT = 15000;
+    private static final String REQUEST_METHOD = "GET";
+    private static final int READ_TIMEOUT = 15000;
+    private static final int CONNECTION_TIMEOUT = 15000;
 
     @Override
     protected String doInBackground(String... urls) {
@@ -42,13 +42,9 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
             }
         }
         catch(Exception ex) {
-            Log.w(String.valueOf(HTTPConnection.class), "doInBackground: ", ex);
+            Log.w(String.valueOf(HTTPConnection.class), "doInBackground: " + ex.getMessage(), ex);
             stringBuilder.setLength(0);
-            stringBuilder.append("$JAVA_ERROR$");
-        }
-        finally {
-            if(conn != null)
-                conn.disconnect();
+            stringBuilder.append("$CONNECTION_ERROR$");
         }
 
         return stringBuilder.toString();

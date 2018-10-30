@@ -18,6 +18,8 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... urls) {
         StringBuilder stringBuilder = new StringBuilder();
         HttpURLConnection conn = null;
+        final String username = "ad4aa788b1a8504fce53b6b9bd99a55a";
+        final String password = "bbed478ac526629a1f7692bd5f33ef4f";
 
         try {
             String inputLine;
@@ -26,6 +28,7 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
             conn.setRequestMethod(REQUEST_METHOD);
             conn.setReadTimeout(READ_TIMEOUT);
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
+            conn.setRequestProperty("Authentication", "Basic " + username + ":" + password);
             conn.connect();
             if(conn.getResponseCode() != 200) {
                 stringBuilder.append("$RESPONSE_ERROR$#" + conn.getResponseCode());

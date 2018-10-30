@@ -5,13 +5,18 @@
     <string name="inpSymbolHint">ABCD</string>
     <string name="txtOptions">Options: </string>
 
-    <string name="btnOptions">Display Options</string>
-    <string name="btnSelectAll">Check All</string>
-    <string name="btnClearAll">Clear All</string>
+    <string name="btnSearch">Search Stock Symbols</string>
 
-    <string name="categoryQuote">Quote</string>
+    <string name="optionsHeader">Search Options</string>
 
-    <string name="chkHigh">High</string>
-    <string name="chkLow">Low</string>
-    <string name="chkLatestPrice">Latest Price</string>
+    <string name="txtStartDate">Start Date: </string>
+    <string name="txtEndDate">End Date: </string>
+
+    <string name="txtChartRange">Frequency:</string>
+    <string name="radDaily">Daily</string>
+    <string name="radWeekly">Weekly</string>
+    <string name="radMonthly">Monthly</string>
+    <string name="radQuarterly">Quarterly</string>
+    <string name="radYearly">Yearly</string>
+
 </resources>

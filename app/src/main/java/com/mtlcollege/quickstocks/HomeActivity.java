@@ -1,6 +1,7 @@
 package com.mtlcollege.quickstocks;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -10,15 +11,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mtlcollege.quickstocks.util.HTTPConnection;
+import com.mtlcollege.quickstocks.util.JSONParser;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final int CONNECTION_PERMISSION_REQUEST = 1;
-    Button btnLookup, btnOptions;
+    Button btnLookup;
+    EditText inpStartDate, inpEndDate;
+    Calendar todaysDate = Calendar.getInstance();
+    final Calendar startCalendar = Calendar.getInstance();
+    final Calendar endCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +38,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         btnLookup = findViewById(R.id.btnLookup);
-        btnOptions = findViewById(R.id.btnOptions);
 
         btnLookup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,23 +57,72 @@ public class HomeActivity extends AppCompatActivity {
                 String result = lookupStock();
                 if(!result.isEmpty()) {
                     Intent intent = new Intent(HomeActivity.this, DisplayActivity.class);
-                    intent.putExtra("lookupResult", result);
-                    startActivity(intent);
+                    ArrayList<String> results = JSONParser.getValues(result);
+                    if(results.isEmpty())
+                        Toast.makeText(getApplicationContext(), "The symbol entered could not be found.", Toast.LENGTH_SHORT).show();
+                    else {
+                        intent.putStringArrayListExtra("lookupResult", results);
+                        startActivity(intent);
+                    }
                 }
             }
         });
 
-        btnOptions.setOnClickListener(new View.OnClickListener() {
+        inpStartDate = findViewById(R.id.inpStartDate);
+        inpEndDate = findViewById(R.id.inpEndDate);
+        updateDate(1);
+
+        final DatePickerDialog.OnDateSetListener startDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                startCalendar.set(Calendar.YEAR, year);
+                startCalendar.set(Calendar.MONTH, month);
+                startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateDate(2);
+            }
+        };
+        inpStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, OptionsActivity.class);
-                startActivity(intent);
+                new DatePickerDialog(HomeActivity.this, startDate, startCalendar.get(Calendar.YEAR),
+                        startCalendar.get(Calendar.MONTH),
+                        startCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
+        final DatePickerDialog.OnDateSetListener endDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                endCalendar.set(Calendar.YEAR, year);
+                endCalendar.set(Calendar.MONTH, month);
+                endCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateDate(3);
+            }
+        };
+        inpEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(HomeActivity.this, endDate, endCalendar.get(Calendar.YEAR),
+                        endCalendar.get(Calendar.MONTH),
+                        endCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
 
-        //TODO: Search for symbols based on company name (found at https://api.iextrading.com/1.0/ref-data/symbols )
-        //TODO: Display parameters
+    private void updateDate(int mode) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+
+        /* 1: Sets the start and end dialog boxes to the current date (called once in the onCreate() method)
+         * 2: Sets the start date based on the user's selection
+         * 3: Sets the end date based on the user's selection
+         */
+        switch(mode) {
+            case 1: inpStartDate.setText(sdf.format(todaysDate.getTime()));
+                    inpEndDate.setText(sdf.format(todaysDate.getTime()));
+                    break;
+            case 2: inpStartDate.setText(sdf.format(startCalendar.getTime())); break;
+            case 3: inpEndDate.setText(sdf.format(endCalendar.getTime())); break;
+        }
     }
 
     private String lookupStock() {
@@ -72,8 +132,19 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please enter a symbol.", Toast.LENGTH_SHORT).show();
             return "";
         }
+        if(startCalendar.getTime().after(endCalendar.getTime())) {
+            Toast.makeText(getApplicationContext(), "The start date must be before the end date.", Toast.LENGTH_SHORT).show();
+            return "";
+        }
+        if(startCalendar.getTime().after(todaysDate.getTime()) || endCalendar.getTime().after(todaysDate.getTime())) {
+            Toast.makeText(getApplicationContext(), "The start and end dates cannot be in the future.", Toast.LENGTH_SHORT).show();
+            return "";
+        }
 
-        String url = "https://api.iextrading.com/1.0/stock/" + symbol + "/batch?types=quote";
+
+        //EXAMPLE: https://api.intrinio.com/prices?identifier=PZA:CT
+
+        String url = "https://api.intrinio.com/prices?identifier=" + symbol + ":CT&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0&page_number=1&page_size=1";
         String result;
         HTTPConnection connectionRequest = new HTTPConnection();
         try {

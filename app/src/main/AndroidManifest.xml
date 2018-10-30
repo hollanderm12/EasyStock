@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".DisplayActivity" />
-        <activity android:name=".OptionsActivity"></activity>
     </application>
 
 </manifest>

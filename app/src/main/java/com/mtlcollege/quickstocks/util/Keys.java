@@ -7,7 +7,7 @@ public class Keys {
     public final String Q_SYMBOL = "symbol";
     public final String Q_COMPANY_NAME = "companyName";
 
-    public final String Q_HIGH = "high";
-    public final String Q_LOW = "low";
-    public final String Q_LATEST_PRICE = "latestPrice";
+    public final String OPTION_QUOTE = "quote";
+    public final String OPTION_NEWS = "news";
+    public final String OPTION_CHART = "chart";
 }

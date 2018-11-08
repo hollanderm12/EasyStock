@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Quick Stocks</string>
-    <string name="btnLookup">Get Stock Information</string>
+
+    <!--activity_home-->
+
     <string name="txtSymbol">Symbol: </string>
     <string name="inpSymbolHint">ABCD</string>
     <string name="txtOptions">Options: </string>
 
+    <string name="btnLookup">Get Stock Information</string>
     <string name="btnSearch">Search Stock Symbols</string>
 
     <string name="optionsHeader">Search Options</string>
@@ -12,11 +15,21 @@
     <string name="txtStartDate">Start Date: </string>
     <string name="txtEndDate">End Date: </string>
 
+    <string name="txtOrderBy">Order By: </string>
+    <string name="radRecent">Most Recent</string>
+    <string name="radOldest">Oldest</string>
+
     <string name="txtChartRange">Frequency:</string>
     <string name="radDaily">Daily</string>
     <string name="radWeekly">Weekly</string>
     <string name="radMonthly">Monthly</string>
     <string name="radQuarterly">Quarterly</string>
     <string name="radYearly">Yearly</string>
+
+    <!--activity_display-->
+
+    <string name="btnPrevious">Previous</string>
+    <string name="btnGoTo">Go To</string>
+    <string name="btnNext">Next</string>
 
 </resources>

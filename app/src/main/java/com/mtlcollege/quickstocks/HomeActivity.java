@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.mtlcollege.quickstocks.util.HTTPConnection;
 import com.mtlcollege.quickstocks.util.JSONParser;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -55,13 +55,14 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 String result = lookupStock();
+                //result will be empty if user error occurs (e.g. leaving the symbol input blank) or if there is a problem communicating with the Intrinio server
                 if(!result.isEmpty()) {
-                    Intent intent = new Intent(HomeActivity.this, DisplayActivity.class);
-                    ArrayList<String> results = JSONParser.getValues(result);
-                    if(results.isEmpty())
-                        Toast.makeText(getApplicationContext(), "The symbol entered could not be found.", Toast.LENGTH_SHORT).show();
+                    int resultCount = JSONParser.getResultCount(result);
+                    if(resultCount == 0)
+                        Toast.makeText(getApplicationContext(), "Your lookup returned no results.", Toast.LENGTH_SHORT).show();
                     else {
-                        intent.putStringArrayListExtra("lookupResult", results);
+                        Intent intent = new Intent(HomeActivity.this, DisplayActivity.class);
+                        intent.putExtra("lookupResult", result);
                         startActivity(intent);
                     }
                 }
@@ -114,8 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
         /* 1: Sets the start and end dialog boxes to the current date (called once in the onCreate() method)
          * 2: Sets the start date based on the user's selection
-         * 3: Sets the end date based on the user's selection
-         */
+         * 3: Sets the end date based on the user's selection */
         switch(mode) {
             case 1: inpStartDate.setText(sdf.format(todaysDate.getTime()));
                     inpEndDate.setText(sdf.format(todaysDate.getTime()));
@@ -128,12 +128,15 @@ public class HomeActivity extends AppCompatActivity {
     private String lookupStock() {
         EditText inpSymbol = findViewById(R.id.inpSymbol);
         String symbol = inpSymbol.getText().toString().toUpperCase();
+        todaysDate = Calendar.getInstance(); //Reload todaysDate in case the date changes between the activity loading and the lookup button being pressed
+
+        //User error conditions. An empty string returned causes the calling method to perform no action.
         if(symbol.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please enter a symbol.", Toast.LENGTH_SHORT).show();
             return "";
         }
         if(startCalendar.getTime().after(endCalendar.getTime())) {
-            Toast.makeText(getApplicationContext(), "The start date must be before the end date.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "The start date must be before or equal to the end date.", Toast.LENGTH_SHORT).show();
             return "";
         }
         if(startCalendar.getTime().after(todaysDate.getTime()) || endCalendar.getTime().after(todaysDate.getTime())) {
@@ -144,7 +147,31 @@ public class HomeActivity extends AppCompatActivity {
 
         //EXAMPLE: https://api.intrinio.com/prices?identifier=PZA:CT
 
-        String url = "https://api.intrinio.com/prices?identifier=" + symbol + ":CT&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0&page_number=1&page_size=1";
+        StringBuilder urlBuilder = new StringBuilder();
+        urlBuilder.append("https://api.intrinio.com/prices?identifier=")
+                .append(symbol)
+                .append(":CT&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0")
+                .append("&start_date=")
+                .append(inpStartDate.getText())
+                .append("&end_date=")
+                .append(inpEndDate.getText());
+        if(((RadioButton)findViewById(R.id.radRecent)).isChecked())
+            urlBuilder.append("&sort_order=desc");
+        if(((RadioButton)findViewById(R.id.radOldest)).isChecked())
+            urlBuilder.append("&sort_order=asc");
+        if(((RadioButton)findViewById(R.id.radDaily)).isChecked())
+            urlBuilder.append("&frequency=daily");
+        if(((RadioButton)findViewById(R.id.radWeekly)).isChecked())
+            urlBuilder.append("&frequency=weekly");
+        if(((RadioButton)findViewById(R.id.radMonthly)).isChecked())
+            urlBuilder.append("&frequency=monthly");
+        if(((RadioButton)findViewById(R.id.radQuarterly)).isChecked())
+            urlBuilder.append("&frequency=quarterly");
+        if(((RadioButton)findViewById(R.id.radYearly)).isChecked())
+            urlBuilder.append("&frequency=yearly");
+        urlBuilder.append("&page_number=1");
+
+        String url = urlBuilder.toString();
         String result;
         HTTPConnection connectionRequest = new HTTPConnection();
         try {

@@ -6,6 +6,36 @@
     android:orientation="vertical"
     tools:context=".DisplayActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnPrevious"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnGoTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnGoTo"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btnNext"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txtSymbol"
         android:layout_width="match_parent"
@@ -19,6 +49,13 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         tools:text="COMPANY NAME" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        tools:text="DATE" />
 
     <TextView
         android:id="@+id/txtTest"

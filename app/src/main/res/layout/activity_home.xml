@@ -26,16 +26,13 @@
                 android:id="@+id/inpSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/inpSymbolHint"
                 android:inputType="textPersonName"
                 android:maxLength="5" />
-        </TableRow>
-
-        <TableRow>
-
         </TableRow>
 
     </TableLayout>
@@ -52,13 +49,15 @@
         android:id="@+id/btnLookup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btnLookup" />
+        android:text="@string/btnLookup"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btnSearch" />
+        android:text="@string/btnSearch"
+        android:textAllCaps="false" />
 
     <TextView
         android:id="@+id/textView10"
@@ -87,17 +86,20 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="@string/txtStartDate"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/inpStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date"
+                android:textSize="16sp"
                 android:clickable="true"
-                android:focusable="false" />
+                android:ems="10"
+                android:focusable="false"
+                android:inputType="date" />
 
         </TableRow>
 
@@ -112,20 +114,55 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="@string/txtEndDate"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/inpEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="10sp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date"
+                android:textSize="16sp"
                 android:clickable="true"
-                android:focusable="false" />
+                android:ems="10"
+                android:focusable="false"
+                android:inputType="date" />
+
         </TableRow>
 
     </TableLayout>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:textSize="16sp"
+            android:text="@string/txtOrderBy" />
+
+        <RadioButton
+            android:id="@+id/radRecent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/radRecent" />
+
+        <RadioButton
+            android:id="@+id/radOldest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:text="@string/radOldest" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView3"
@@ -133,7 +170,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:text="@string/txtChartRange"
-        android:textStyle="bold" />
+        android:textSize="16sp" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -144,6 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:checked="true"
             android:text="@string/radDaily" />
 
         <RadioButton
@@ -151,7 +189,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:checked="true"
+            android:checked="false"
             android:text="@string/radWeekly" />
 
         <RadioButton

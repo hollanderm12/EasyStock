@@ -17,7 +17,7 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... urls) {
         StringBuilder stringBuilder = new StringBuilder();
-        HttpURLConnection conn = null;
+        HttpURLConnection conn;
         final String username = "ad4aa788b1a8504fce53b6b9bd99a55a";
         final String password = "bbed478ac526629a1f7692bd5f33ef4f";
 

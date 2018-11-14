@@ -3,7 +3,7 @@ package com.mtlcollege.quickstocks.model;
 public class StockInfo {
 
     private String symbol;
-    private String stockExchange;
+    private String securityName;
     private String securityType;
     private String currencyType;
 
@@ -15,13 +15,9 @@ public class StockInfo {
         this.symbol = symbol;
     }
 
-    public String getStockExchange() {
-        return stockExchange;
-    }
+    public String getSecurityName() { return securityName; }
 
-    public void setStockExchange(String stockExchange) {
-        this.stockExchange = stockExchange;
-    }
+    public void setSecurityName(String securityName) { this.securityName = securityName; }
 
     public String getSecurityType() {
         return securityType;
@@ -39,6 +35,6 @@ public class StockInfo {
         this.currencyType = currencyType;
     }
 
-    private StockInfo() {
+    public StockInfo() {
     }
 }

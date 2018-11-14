@@ -1,8 +1,5 @@
 package com.mtlcollege.quickstocks.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class Results {
 
     private String date;
@@ -19,14 +16,13 @@ public class Results {
     private double adjLow;
     private double adjClose;
     private long adjVolume;
+    private boolean[] flags;
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+    public void setDate(String date) { this.date = date; }
 
     public double getOpen() {
         return open;
@@ -34,6 +30,7 @@ public class Results {
 
     public void setOpen(double open) {
         this.open = open;
+        flags[0] = true;
     }
 
     public double getHigh() {
@@ -42,6 +39,7 @@ public class Results {
 
     public void setHigh(double high) {
         this.high = high;
+        flags[1] = true;
     }
 
     public double getLow() {
@@ -50,6 +48,7 @@ public class Results {
 
     public void setLow(double low) {
         this.low = low;
+        flags[2] = true;
     }
 
     public double getClose() {
@@ -58,6 +57,7 @@ public class Results {
 
     public void setClose(double close) {
         this.close = close;
+        flags[3] = true;
     }
 
     public long getVolume() {
@@ -66,6 +66,7 @@ public class Results {
 
     public void setVolume(long volume) {
         this.volume = volume;
+        flags[4] = true;
     }
 
     public double getExDividend() {
@@ -74,6 +75,7 @@ public class Results {
 
     public void setExDividend(double exDividend) {
         this.exDividend = exDividend;
+        flags[5] = true;
     }
 
     public double getSplitRatio() {
@@ -82,6 +84,7 @@ public class Results {
 
     public void setSplitRatio(double splitRatio) {
         this.splitRatio = splitRatio;
+        flags[6] = true;
     }
 
     public double getAdjFactor() {
@@ -90,6 +93,7 @@ public class Results {
 
     public void setAdjFactor(double adjFactor) {
         this.adjFactor = adjFactor;
+        flags[7] = true;
     }
 
     public double getAdjOpen() {
@@ -98,6 +102,7 @@ public class Results {
 
     public void setAdjOpen(double adjOpen) {
         this.adjOpen = adjOpen;
+        flags[8] = true;
     }
 
     public double getAdjHigh() {
@@ -106,6 +111,7 @@ public class Results {
 
     public void setAdjHigh(double adjHigh) {
         this.adjHigh = adjHigh;
+        flags[9] = true;
     }
 
     public double getAdjLow() {
@@ -114,24 +120,26 @@ public class Results {
 
     public void setAdjLow(double adjLow) {
         this.adjLow = adjLow;
+        flags[10] = true;
     }
 
-    public double getAdjClose() {
-        return adjClose;
-    }
+    public double getAdjClose() { return adjClose; }
 
     public void setAdjClose(double adjClose) {
         this.adjClose = adjClose;
+        flags[11] = true;
     }
 
-    public long getAdjVolume() {
-        return adjVolume;
-    }
+    public long getAdjVolume() { return adjVolume; }
 
     public void setAdjVolume(long adjVolume) {
         this.adjVolume = adjVolume;
+        flags[12] = true;
     }
 
+    public boolean[] getFlags() { return flags; }
+
     public Results() {
+        flags = new boolean[13];
     }
 }

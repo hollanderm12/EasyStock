@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#000000"
     tools:context=".DisplayActivity">
 
     <LinearLayout
@@ -13,7 +14,7 @@
 
         <Button
             android:id="@+id/btnPrevious"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnPrevious"
@@ -21,7 +22,7 @@
 
         <Button
             android:id="@+id/btnGoTo"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnGoTo"
@@ -29,7 +30,7 @@
 
         <Button
             android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/btnNext"
@@ -40,13 +41,17 @@
         android:id="@+id/txtSymbol"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:layout_marginBottom="5sp"
+        android:gravity="center"
+        android:textSize="22sp"
         tools:text="SYMBOL" />
 
     <TextView
         android:id="@+id/txtCompanyName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:gravity="center"
         android:textSize="18sp"
         tools:text="COMPANY NAME" />
 
@@ -54,14 +59,159 @@
         android:id="@+id/txtDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_marginBottom="5sp"
+        android:gravity="center"
+        android:textSize="20sp"
         tools:text="DATE" />
 
-    <TextView
-        android:id="@+id/txtTest"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        tools:text="RESULTS" />
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:text="@string/txtActualData"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="OPEN" />
+
+            <TextView
+                android:id="@+id/txtHigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="HIGH" />
+
+            <TextView
+                android:id="@+id/txtLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="LOW" />
+
+            <TextView
+                android:id="@+id/txtClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="CLOSE" />
+
+            <TextView
+                android:id="@+id/txtVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="VOLUME" />
+
+            <TextView
+                android:id="@+id/txtExDividend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="EX DIVIDEND" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/darker_gray"
+                android:gravity="center"
+                android:text="@string/txtDivSplit"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtSplitRatio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="SPLIT RATIO" />
+
+            <TextView
+                android:id="@+id/txtAdjFactor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUST FACTOR" />
+
+            <TextView
+                android:id="@+id/txtAdjOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUSTED OPEN" />
+
+            <TextView
+                android:id="@+id/txtAdjHigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUSTED HIGH" />
+
+            <TextView
+                android:id="@+id/txtAdjLow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUSTED LOW" />
+
+            <TextView
+                android:id="@+id/txtAdjClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUSTED CLOSE" />
+
+            <TextView
+                android:id="@+id/txtAdjVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginBottom="5sp"
+                android:textSize="18sp"
+                tools:text="ADJUSTED VOLUME" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

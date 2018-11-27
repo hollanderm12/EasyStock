@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.mtlcollege.quickstocks.model.Results;
 import com.mtlcollege.quickstocks.model.StockInfo;
+import com.mtlcollege.quickstocks.util.Credentials;
 import com.mtlcollege.quickstocks.util.JSONParser;
 import com.mtlcollege.quickstocks.util.WebLookup;
 
@@ -43,19 +44,17 @@ public class DisplayActivity extends AppCompatActivity {
         Boolean oldestFirst = extras.getBoolean("oldestFirst");
         String symbol = extras.getString("symbol");
         symbol = symbol.replace(" ", "%20");
+
         StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append("https://api.intrinio.com/securities?query=")
+        urlBuilder.append("https://api.intrinio.com/securities?identifier=")
                 .append(symbol)
-                .append("&exch_symbol=XTSE&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0")
-                .append("&page_number=1&page_size=1");
+                .append(":CT&exch_symbol=XTSE&api_key=")
+                .append(Credentials.getApiKey());
+        StockInfo si = JSONParser.getTopInformation(WebLookup.lookup(urlBuilder.toString(), getApplicationContext()));
+        txtSymbol.setText(symbol + " (" + si.getCurrencyType() + ")");
+        txtCompanyName.setText(si.getSecurityName());
 
-        String stockInfo = WebLookup.lookup(urlBuilder.toString(), getApplicationContext());
-        ArrayList<StockInfo> si;
-        si = JSONParser.getSearchResults(stockInfo);
-        String symbolText = si.get(0).getSymbol() + " (" + si.get(0).getCurrencyType() + ")";
-        txtSymbol.setText(symbolText);
-        txtCompanyName.setText(si.get(0).getSecurityName());
-
+        //resultList cannot be empty as an empty list would have been detected in HomeActivity prior to this being called
         resultList = JSONParser.getLookupResults(result);
         maxIndex = resultList.size() - 1;
         currentIndex = 0;
@@ -64,7 +63,6 @@ public class DisplayActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
         btnGoTo = findViewById(R.id.btnGoTo);
 
-        //resultList cannot be empty as an empty list would have been detected in HomeActivity prior to this being called
         writeText(currentIndex, oldestFirst);
         updateButtons(currentIndex);
 
@@ -125,7 +123,7 @@ public class DisplayActivity extends AppCompatActivity {
                 Results r = resultList.get(index);
                 Method m = r.getClass().getMethod(methods[i]);
                 Object value = m.invoke(r);
-                if (value instanceof Double) {
+                if(value instanceof Double) {
                     double d = (Double) value;
                     DecimalFormat df = new DecimalFormat("##0.00");
                     resultBuilder.append(df.format(d));
@@ -158,7 +156,7 @@ public class DisplayActivity extends AppCompatActivity {
                     else
                         textBoxes[i].setVisibility(View.GONE);
                 }
-                if (value instanceof Long) {
+                if(value instanceof Long) {
                     long l = (Long) value;
                     if(l > 0)
                         resultBuilder.append(l);

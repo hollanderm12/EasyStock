@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.mtlcollege.quickstocks.model.StockInfo;
+import com.mtlcollege.quickstocks.util.Credentials;
 import com.mtlcollege.quickstocks.util.HTTPConnection;
 import com.mtlcollege.quickstocks.util.JSONParser;
 import com.mtlcollege.quickstocks.util.WebLookup;
@@ -70,7 +71,6 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeActivity.this, DisplayActivity.class);
                     intent.putExtra("lookupResult", result);
                     String symbol = inpSymbol.getText().toString().toUpperCase();
-                    symbol = symbol.replace(" ", "%20");
                     intent.putExtra("symbol", symbol);
                     intent.putExtra("oldestFirst", oldestFirst);
                     startActivity(intent);
@@ -112,8 +112,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 1)
-        {
+
+        //1 is passed if a search result was returned from SearchActivity
+        if(resultCode == 1) {
             String symbolReceived = data.getStringExtra("symbol");
             inpSymbol.setText(symbolReceived);
         }
@@ -127,9 +128,9 @@ public class HomeActivity extends AppCompatActivity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
 
-        /* 1: Sets the start and end dialog boxes to the current date (called once in the onCreate() method)
-         * 2: Sets the start date based on the user's selection
-         * 3: Sets the end date based on the user's selection */
+        /* CURRENT_DATE: Sets the start and end dialog boxes to the current date (called once in the onCreate() method)
+         * UPDATE_START: Sets the start date based on the user's selection
+         * UPDATE_END: Sets the end date based on the user's selection */
         switch(mode) {
             case CURRENT_DATE: inpStartDate.setText(sdf.format(todaysDate.getTime()));
                     inpEndDate.setText(sdf.format(todaysDate.getTime()));
@@ -140,7 +141,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private String lookupStock() {
-        String symbol = inpSymbol.getText().toString().toUpperCase();
+        String symbol = inpSymbol.getText().toString().trim().toUpperCase();
         symbol = symbol.replace(" ", "%20");
         todaysDate = Calendar.getInstance(); //Reload todaysDate in case the date changes between the activity loading and the lookup button being pressed
 
@@ -161,7 +162,8 @@ public class HomeActivity extends AppCompatActivity {
         StringBuilder urlBuilder = new StringBuilder();
            urlBuilder.append("https://api.intrinio.com/prices?identifier=")
                 .append(symbol)
-                .append(":CT&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0")
+                .append(":CT&api_key=")
+                .append(Credentials.getApiKey())
                 .append("&start_date=")
                 .append(inpStartDate.getText())
                 .append("&end_date=")

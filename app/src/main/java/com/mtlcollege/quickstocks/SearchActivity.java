@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.mtlcollege.quickstocks.model.StockInfo;
+import com.mtlcollege.quickstocks.util.Credentials;
 import com.mtlcollege.quickstocks.util.HTTPConnection;
 import com.mtlcollege.quickstocks.util.JSONParser;
 import com.mtlcollege.quickstocks.util.WebLookup;
@@ -145,7 +146,8 @@ public class SearchActivity extends AppCompatActivity {
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append("https://api.intrinio.com/securities?query=")
                 .append(search)
-                .append("&exch_symbol=XTSE&api_key=OjgyYzhjNGZhYjJjZGVmZTJiOTAyYTRiZGZiNzI3MDI0")
+                .append("&exch_symbol=XTSE&api_key=")
+                .append(Credentials.getApiKey())
                 .append("&page_number=1&page_size=100");
 
         return WebLookup.lookup(urlBuilder.toString(), getApplicationContext());

@@ -10,16 +10,13 @@ import java.net.URL;
 
 public class HTTPConnection extends AsyncTask<String, Void, String> {
 
-    private static final String REQUEST_METHOD = "GET";
-    private static final int READ_TIMEOUT = 15000;
-    private static final int CONNECTION_TIMEOUT = 15000;
-
     @Override
     protected String doInBackground(String... urls) {
+        final String REQUEST_METHOD = "GET";
+        final int READ_TIMEOUT = 15000;
+        int CONNECTION_TIMEOUT = 15000;
         StringBuilder stringBuilder = new StringBuilder();
         HttpURLConnection conn;
-        final String username = "ad4aa788b1a8504fce53b6b9bd99a55a";
-        final String password = "bbed478ac526629a1f7692bd5f33ef4f";
 
         try {
             String inputLine;
@@ -28,10 +25,10 @@ public class HTTPConnection extends AsyncTask<String, Void, String> {
             conn.setRequestMethod(REQUEST_METHOD);
             conn.setReadTimeout(READ_TIMEOUT);
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
-            conn.setRequestProperty("Authentication", "Basic " + username + ":" + password);
+            conn.setRequestProperty("Authentication", "Basic " + Credentials.getUsername() + ":" + Credentials.getPassword());
             conn.connect();
             if(conn.getResponseCode() != 200) {
-                stringBuilder.append("$RESPONSE_ERROR$#" + conn.getResponseCode());
+                stringBuilder.append("$RESPONSE_ERROR$#").append(conn.getResponseCode());
             }
             else {
                 InputStreamReader streamReader = new InputStreamReader(conn.getInputStream());

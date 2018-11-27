@@ -40,7 +40,6 @@ public class JSONParser {
             for(int i = 0 ; i < dataArray.length() ; i++) {
                 Results r = new Results();
 
-                //TODO: Check if JSON Object actually exists (e.g. for RY.NO.U between 10-01-12 and 10-31-12
                 Iterator<String> keys = dataArray.getJSONObject(i).keys();
                 while(keys.hasNext()) {
                     String key = keys.next();
@@ -82,7 +81,7 @@ public class JSONParser {
 
             for(int i = 0 ; i < dataArray.length() ; i++) {
                 StockInfo si = new StockInfo();
-                si.setSymbol(dataArray.getJSONObject(i).getString("ticker"));
+                si.setSymbol(dataArray.getJSONObject(i).getString("ticker").toUpperCase());
                 si.setSecurityName(dataArray.getJSONObject(i).getString("security_name"));
                 si.setSecurityType(dataArray.getJSONObject(i).getString("security_type"));
                 si.setCurrencyType(dataArray.getJSONObject(i).getString("currency"));
@@ -96,5 +95,21 @@ public class JSONParser {
         }
 
         return resultList;
+    }
+
+    public static StockInfo getTopInformation(String toParse) {
+        StockInfo result = new StockInfo();
+
+        try {
+            JSONObject jsonObject = new JSONObject(toParse);
+            result.setCurrencyType(jsonObject.getString("currency"));
+            result.setSecurityName(jsonObject.getString("security_name"));
+        }
+
+        catch(JSONException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 }
